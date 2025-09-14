@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { removeNote } from "../features/notesSlice";
+import { removeNote, makeEditable } from "../features/notesSlice";
 
 function NotesCard({ noteObj }) {
   const dispatch = useDispatch();
@@ -12,9 +12,14 @@ function NotesCard({ noteObj }) {
     <div className="card bg-base-100 shadow-sm border-2 border-cyan-600 rounded-2xl">
       <div className="card-body">
         <h2 className="card-title">{note.title}</h2>
-        <p>{note.title}</p>
+        <p>{note.desc}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-soft btn-info">View</button>
+          <button
+            className="btn btn-soft btn-info"
+            onClick={() => dispatch(makeEditable(noteObj.id))}
+          >
+            Edit
+          </button>
           <button
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
             onClick={() => dispatch(removeNote(noteObj.id))}
