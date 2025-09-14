@@ -1,0 +1,20 @@
+{
+  "name": "back-notes-keeper",
+  "version": "1.0.0",
+  "description": "Backend for notes keeper",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Adesh Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
