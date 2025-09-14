@@ -1,4 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchNotes = createAsyncThunk(
+  "notes/fetchNotes",
+  async function () {
+    const response = await fetch("http://localhost:3000/api/notes");
+    const jsonData = await response.json();
+    return jsonData;
+  }
+);
 
 const initialState = {
   notes: [
@@ -15,6 +24,8 @@ const initialState = {
       isSelectedForEdit: false,
     },
   ],
+  status: "idle",
+  error: null,
 };
 
 export const notesSlice = createSlice({
@@ -66,6 +77,20 @@ export const notesSlice = createSlice({
       });
       console.log(state.notes);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchNotes.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchNotes.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.notes = action.payload;
+      })
+      .addCase(fetchNotes.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 
