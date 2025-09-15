@@ -9,6 +9,19 @@ export const fetchNotes = createAsyncThunk(
   }
 );
 
+export const createNote = createAsyncThunk(
+  "notes/createNote",
+  async function (noteData) {
+    const response = await fetch("http://localhost:3000/api/notes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(noteData),
+    });
+  }
+);
+
 const initialState = {
   notes: [
     {
@@ -34,7 +47,6 @@ export const notesSlice = createSlice({
   reducers: {
     addNote: (state, action) => {
       const newNote = {
-        id: Date.now(),
         title: action.payload.title,
         desc: action.payload.desc,
       };
@@ -90,6 +102,9 @@ export const notesSlice = createSlice({
       .addCase(fetchNotes.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(createNote.fulfilled, (state, action) => {
+        // set the logic to get the status that note added
       });
   },
 });

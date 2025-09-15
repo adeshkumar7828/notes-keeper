@@ -11,10 +11,12 @@ async function handleCreateNewNotes(req, res) {
   const title = req.body.title;
   const desc = req.body.desc;
 
-  await Notes.create({
+  const createdNote = await Notes.create({
     title,
     desc,
   });
+
+  console.log(createdNote);
   res.status(201).send("Note Created");
 }
 
