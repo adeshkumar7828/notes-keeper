@@ -72,8 +72,8 @@ export const notesSlice = createSlice({
       const id = action.payload;
       console.log(id);
       state.notes = state.notes.filter((el) => {
-        console.log(el.id !== id);
-        return el.id !== id;
+        console.log(el._id !== id);
+        return el._id !== id;
       });
       console.log(state.notes);
     },
@@ -85,7 +85,6 @@ export const notesSlice = createSlice({
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.status = "succeeded";
-        // state.notes = action.payload;
         state.notes = [...state.notes, ...action.payload];
       })
       .addCase(fetchNotes.rejected, (state, action) => {

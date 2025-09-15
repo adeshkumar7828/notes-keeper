@@ -6,7 +6,6 @@ function NotesCard({ noteObj }) {
   // console.log(noteObj, typeof noteObj);
   const dispatch = useDispatch();
   const note = useSelector((state) => {
-    console.log(state.note.notes);
     return state.note.notes.find((el) => {
       return el._id === noteObj._id;
     });
