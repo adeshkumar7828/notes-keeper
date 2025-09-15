@@ -12,13 +12,13 @@ export const fetchNotes = createAsyncThunk(
 const initialState = {
   notes: [
     {
-      id: 1,
+      _id: 1,
       title: "git push",
       desc: "The git push command is used to upload your local commits to a remote repository, such as one hosted on GitHub, GitLab, or Bitbucket.",
       isSelectedForEdit: false,
     },
     {
-      id: 2,
+      _id: 2,
       title: "Proxy(Object)",
       desc: "The output [Proxy(Object)] in your console is a feature of Redux Toolkit and the library it uses internally, Immer. It's the expected behavior when you console.log the state object inside a Redux Toolkit reducer.",
       isSelectedForEdit: false,
@@ -85,7 +85,8 @@ export const notesSlice = createSlice({
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.notes = action.payload;
+        // state.notes = action.payload;
+        state.notes = [...state.notes, ...action.payload];
       })
       .addCase(fetchNotes.rejected, (state, action) => {
         state.status = "failed";
