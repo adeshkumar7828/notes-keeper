@@ -15,7 +15,7 @@ function EditNote({ noteObj }) {
 
   function handleEditNoteSaveButton() {
     const editedNote = {
-      id: noteObj.id,
+      id: noteObj._id,
       title: editTitle,
       desc: editDesc,
     };

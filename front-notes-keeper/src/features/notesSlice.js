@@ -44,7 +44,7 @@ export const notesSlice = createSlice({
     makeEditable: (state, action) => {
       const id = action.payload;
       state.notes = state.notes.map((el) => {
-        if (el.id === id) {
+        if (el._id === id) {
           el.isSelectedForEdit = true;
           return el;
         } else {
@@ -57,7 +57,7 @@ export const notesSlice = createSlice({
       const id = action.payload.id;
 
       state.notes = state.notes.map((el) => {
-        if (el.id === id) {
+        if (el._id === id) {
           el.title = action.payload.title;
           el.desc = action.payload.desc;
           el.isSelectedForEdit = false;
@@ -70,12 +70,12 @@ export const notesSlice = createSlice({
 
     removeNote: (state, action) => {
       const id = action.payload;
-      console.log(id);
+      // console.log(id);
       state.notes = state.notes.filter((el) => {
-        console.log(el._id !== id);
+        // console.log(el._id !== id);
         return el._id !== id;
       });
-      console.log(state.notes);
+      // console.log(state.notes);
     },
   },
   extraReducers: (builder) => {

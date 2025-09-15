@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { removeNote, makeEditable } from "../features/notesSlice";
 
 function NotesCard({ noteObj }) {
-  // console.log(noteObj, typeof noteObj);
+  // console.log(noteObj._id);
   const dispatch = useDispatch();
   const note = useSelector((state) => {
     return state.note.notes.find((el) => {
