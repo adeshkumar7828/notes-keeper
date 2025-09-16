@@ -21,6 +21,9 @@ export const createNote = createAsyncThunk(
       },
       body: JSON.stringify(noteData),
     });
+    const data = await response.json();
+    // console.log(data);
+    return data;
   }
 );
 
@@ -102,12 +105,9 @@ export const notesSlice = createSlice({
 
     removeNote: (state, action) => {
       const id = action.payload;
-      // console.log(id);
       state.notes = state.notes.filter((el) => {
-        // console.log(el._id !== id);
         return el._id !== id;
       });
-      // console.log(state.notes);
     },
   },
   extraReducers: (builder) => {
@@ -123,8 +123,14 @@ export const notesSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(deleteNote.fulfilled, (state, action) => {
+        // set the logic to get the status that note deleted
+        // currently not writing the logic of delete here so that i can  remove the removeNote reducer just because that i have used dispatch directly in thunk that property will also be removed thats why
+      })
       .addCase(createNote.fulfilled, (state, action) => {
         // set the logic to get the status that note added
+        // console.log(action.payload);
+        state.notes = [...state.notes, action.payload];
       });
   },
 });

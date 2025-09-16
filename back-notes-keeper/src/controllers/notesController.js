@@ -17,7 +17,7 @@ async function handleCreateNewNotes(req, res) {
   });
 
   console.log(createdNote);
-  res.status(201).send("Note Created");
+  res.status(201).json(createdNote);
 }
 
 async function handleDeleteNote(req, res) {
