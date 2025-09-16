@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { removeNote, makeEditable } from "../features/notesSlice";
+import { makeEditable, deleteNote } from "../features/notesSlice";
 
 function NotesCard({ noteObj }) {
   // console.log(noteObj._id);
@@ -10,6 +10,10 @@ function NotesCard({ noteObj }) {
       return el._id === noteObj._id;
     });
   });
+
+  function handleDeleteNote() {
+    dispatch(deleteNote(noteObj._id));
+  }
 
   return (
     <div className="card bg-base-100 shadow-sm border-2 border-cyan-600 rounded-2xl">
@@ -25,7 +29,7 @@ function NotesCard({ noteObj }) {
           </button>
           <button
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            onClick={() => dispatch(removeNote(noteObj._id))}
+            onClick={handleDeleteNote}
           >
             ✕
           </button>

@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const serverUrl = `http://localhost:3000/api/notes`;
+
 export const fetchNotes = createAsyncThunk(
   "notes/fetchNotes",
   async function () {
-    const response = await fetch("http://localhost:3000/api/notes");
+    const response = await fetch(serverUrl);
     const jsonData = await response.json();
     return jsonData;
   }
@@ -12,13 +14,31 @@ export const fetchNotes = createAsyncThunk(
 export const createNote = createAsyncThunk(
   "notes/createNote",
   async function (noteData) {
-    const response = await fetch("http://localhost:3000/api/notes", {
+    const response = await fetch(serverUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(noteData),
     });
+  }
+);
+
+export const deleteNote = createAsyncThunk(
+  "notes/deleteNote",
+  async function (id, { dispatch, rejectWithValue }) {
+    // console.log(id);
+    try {
+      const response = await fetch(serverUrl + "/" + id, {
+        method: "DELETE",
+      });
+      if (response.status === 204) {
+        dispatch(removeNote(id));
+        return id;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 

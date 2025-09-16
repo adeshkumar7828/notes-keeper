@@ -7,7 +7,7 @@ async function handleGetAllNotes(req, res) {
 }
 
 async function handleCreateNewNotes(req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const title = req.body.title;
   const desc = req.body.desc;
 
@@ -20,4 +20,12 @@ async function handleCreateNewNotes(req, res) {
   res.status(201).send("Note Created");
 }
 
-module.exports = { handleGetAllNotes, handleCreateNewNotes };
+async function handleDeleteNote(req, res) {
+  const { _id } = req.params;
+
+  await Notes.findByIdAndDelete(_id);
+
+  res.status(204).send("Note Deleted");
+}
+
+module.exports = { handleGetAllNotes, handleCreateNewNotes, handleDeleteNote };
