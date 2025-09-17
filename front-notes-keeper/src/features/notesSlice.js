@@ -27,6 +27,29 @@ export const createNote = createAsyncThunk(
   }
 );
 
+export const updateNote = createAsyncThunk(
+  "notes/updateNote",
+  async function (noteData, { dispatch, rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl + "/" + noteData._id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(noteData),
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        dispatch(editNote(data));
+      }
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const deleteNote = createAsyncThunk(
   "notes/deleteNote",
   async function (id, { dispatch, rejectWithValue }) {
@@ -89,10 +112,10 @@ export const notesSlice = createSlice({
     },
 
     editNote: (state, action) => {
-      const id = action.payload.id;
+      const _id = action.payload._id;
 
       state.notes = state.notes.map((el) => {
-        if (el._id === id) {
+        if (el._id === _id) {
           el.title = action.payload.title;
           el.desc = action.payload.desc;
           el.isSelectedForEdit = false;
@@ -123,19 +146,20 @@ export const notesSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(deleteNote.fulfilled, (state, action) => {
-        // set the logic to get the status that note deleted
-        // currently not writing the logic of delete here so that i can  remove the removeNote reducer just because that i have used dispatch directly in thunk that property will also be removed thats why
-      })
       .addCase(createNote.fulfilled, (state, action) => {
         // set the logic to get the status that note added
         // console.log(action.payload);
         state.notes = [...state.notes, action.payload];
       });
+    // .addCase(updateNote.fulfilled, (state, action) => {
+    //   // set the logic to get the status that note updated
+    // })
+    // .addCase(deleteNote.fulfilled, (state, action) => {
+    //   // set the logic to get the status that note deleted
+    // });
   },
 });
 
-export const { addNote, removeNote, editNote, makeEditable } =
-  notesSlice.actions;
+export const { removeNote, editNote, makeEditable } = notesSlice.actions;
 
 export default notesSlice.reducer;

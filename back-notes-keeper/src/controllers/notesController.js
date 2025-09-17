@@ -16,8 +16,25 @@ async function handleCreateNewNotes(req, res) {
     desc,
   });
 
-  console.log(createdNote);
+  // console.log(createdNote);
   res.status(201).json(createdNote);
+}
+
+async function handleUpdateNote(req, res) {
+  const { _id } = req.params;
+  const { title, desc } = req.body;
+
+  // The `{ new: true }` option returns the modified document rather than the original. Before that old notes was being sent
+  const updatedNote = await Notes.findByIdAndUpdate(
+    _id,
+    {
+      title,
+      desc,
+    },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json(updatedNote);
 }
 
 async function handleDeleteNote(req, res) {
@@ -28,4 +45,9 @@ async function handleDeleteNote(req, res) {
   res.status(204).send("Note Deleted");
 }
 
-module.exports = { handleGetAllNotes, handleCreateNewNotes, handleDeleteNote };
+module.exports = {
+  handleGetAllNotes,
+  handleCreateNewNotes,
+  handleDeleteNote,
+  handleUpdateNote,
+};
