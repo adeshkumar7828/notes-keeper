@@ -4,26 +4,34 @@ const serverUrl = `http://localhost:3000/api/notes`;
 
 export const fetchNotes = createAsyncThunk(
   "notes/fetchNotes",
-  async function () {
-    const response = await fetch(serverUrl);
-    const jsonData = await response.json();
-    return jsonData;
+  async function (_, { rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl);
+      const jsonData = await response.json();
+      return jsonData;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
   }
 );
 
 export const createNote = createAsyncThunk(
   "notes/createNote",
-  async function (noteData) {
-    const response = await fetch(serverUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(noteData),
-    });
-    const data = await response.json();
-    // console.log(data);
-    return data;
+  async function (noteData, { rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(noteData),
+      });
+      const data = await response.json();
+      // console.log(data);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
   }
 );
 
@@ -145,6 +153,7 @@ export const notesSlice = createSlice({
       .addCase(fetchNotes.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        console.log(action);
       })
       .addCase(createNote.fulfilled, (state, action) => {
         // set the logic to get the status that note added

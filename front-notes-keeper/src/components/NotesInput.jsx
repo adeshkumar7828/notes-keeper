@@ -9,6 +9,7 @@ function NotesInput() {
   const dispatch = useDispatch();
 
   function handleEnterNote() {
+    if (!title && !desc) return;
     dispatch(
       createNote({
         title,

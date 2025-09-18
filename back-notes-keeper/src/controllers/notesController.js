@@ -1,9 +1,13 @@
 const Notes = require("../models/notesModel.js");
 
 async function handleGetAllNotes(req, res) {
-  const getNotes = await Notes.find({});
+  try {
+    const getNotes = await Notes.find({});
 
-  res.status(200).json(getNotes);
+    res.status(200).json(getNotes);
+  } catch (err) {
+    return res.status(500).json({ message: "Can not fulfill at this time." });
+  }
 }
 
 async function handleCreateNewNotes(req, res) {
