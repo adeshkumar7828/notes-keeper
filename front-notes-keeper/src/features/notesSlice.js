@@ -1,20 +1,98 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const serverUrl = `http://localhost:3000/api/notes`;
+
+export const fetchNotes = createAsyncThunk(
+  "notes/fetchNotes",
+  async function (_, { rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl);
+      const jsonData = await response.json();
+      return jsonData;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const createNote = createAsyncThunk(
+  "notes/createNote",
+  async function (noteData, { rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(noteData),
+      });
+      const data = await response.json();
+      // console.log(data);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+export const updateNote = createAsyncThunk(
+  "notes/updateNote",
+  async function (noteData, { dispatch, rejectWithValue }) {
+    try {
+      const response = await fetch(serverUrl + "/" + noteData._id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(noteData),
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        dispatch(editNote(data));
+      }
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteNote = createAsyncThunk(
+  "notes/deleteNote",
+  async function (id, { dispatch, rejectWithValue }) {
+    // console.log(id);
+    try {
+      const response = await fetch(serverUrl + "/" + id, {
+        method: "DELETE",
+      });
+      if (response.status === 204) {
+        dispatch(removeNote(id));
+        return id;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const initialState = {
   notes: [
     {
-      id: 1,
+      _id: 1,
       title: "git push",
       desc: "The git push command is used to upload your local commits to a remote repository, such as one hosted on GitHub, GitLab, or Bitbucket.",
       isSelectedForEdit: false,
     },
     {
-      id: 2,
+      _id: 2,
       title: "Proxy(Object)",
       desc: "The output [Proxy(Object)] in your console is a feature of Redux Toolkit and the library it uses internally, Immer. It's the expected behavior when you console.log the state object inside a Redux Toolkit reducer.",
       isSelectedForEdit: false,
     },
   ],
+  status: "idle",
+  error: null,
 };
 
 export const notesSlice = createSlice({
@@ -23,7 +101,6 @@ export const notesSlice = createSlice({
   reducers: {
     addNote: (state, action) => {
       const newNote = {
-        id: Date.now(),
         title: action.payload.title,
         desc: action.payload.desc,
       };
@@ -33,7 +110,7 @@ export const notesSlice = createSlice({
     makeEditable: (state, action) => {
       const id = action.payload;
       state.notes = state.notes.map((el) => {
-        if (el.id === id) {
+        if (el._id === id) {
           el.isSelectedForEdit = true;
           return el;
         } else {
@@ -43,10 +120,10 @@ export const notesSlice = createSlice({
     },
 
     editNote: (state, action) => {
-      const id = action.payload.id;
+      const _id = action.payload._id;
 
       state.notes = state.notes.map((el) => {
-        if (el.id === id) {
+        if (el._id === _id) {
           el.title = action.payload.title;
           el.desc = action.payload.desc;
           el.isSelectedForEdit = false;
@@ -59,17 +136,39 @@ export const notesSlice = createSlice({
 
     removeNote: (state, action) => {
       const id = action.payload;
-      console.log(id);
       state.notes = state.notes.filter((el) => {
-        console.log(el.id !== id);
-        return el.id !== id;
+        return el._id !== id;
       });
-      console.log(state.notes);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchNotes.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchNotes.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.notes = [...state.notes, ...action.payload];
+      })
+      .addCase(fetchNotes.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+        console.log(action);
+      })
+      .addCase(createNote.fulfilled, (state, action) => {
+        // set the logic to get the status that note added
+        // console.log(action.payload);
+        state.notes = [...state.notes, action.payload];
+      });
+    // .addCase(updateNote.fulfilled, (state, action) => {
+    //   // set the logic to get the status that note updated
+    // })
+    // .addCase(deleteNote.fulfilled, (state, action) => {
+    //   // set the logic to get the status that note deleted
+    // });
   },
 });
 
-export const { addNote, removeNote, editNote, makeEditable } =
-  notesSlice.actions;
+export const { removeNote, editNote, makeEditable } = notesSlice.actions;
 
 export default notesSlice.reducer;

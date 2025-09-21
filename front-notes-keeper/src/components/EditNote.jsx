@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { editNote } from "../features/notesSlice.js";
+import { updateNote } from "../features/notesSlice.js";
 
 function EditNote({ noteObj }) {
   const [editTitle, setEditTitle] = useState("");
@@ -15,12 +15,11 @@ function EditNote({ noteObj }) {
 
   function handleEditNoteSaveButton() {
     const editedNote = {
-      id: noteObj.id,
+      _id: noteObj._id,
       title: editTitle,
       desc: editDesc,
     };
-
-    dispatch(editNote(editedNote));
+    dispatch(updateNote(editedNote));
   }
 
   return (

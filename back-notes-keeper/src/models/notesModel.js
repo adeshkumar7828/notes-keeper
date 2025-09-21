@@ -10,6 +10,10 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isSelectedForEdit: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Notes = mongoose.model("notes", noteSchema);

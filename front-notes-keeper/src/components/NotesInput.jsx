@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addNote } from "../features/notesSlice";
+import { createNote } from "../features/notesSlice";
 import { useDispatch } from "react-redux";
 
 function NotesInput() {
@@ -9,12 +9,14 @@ function NotesInput() {
   const dispatch = useDispatch();
 
   function handleEnterNote() {
+    if (!title && !desc) return;
     dispatch(
-      addNote({
+      createNote({
         title,
         desc,
       })
     );
+
     setTitle("");
     setDesc("");
   }
