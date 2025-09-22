@@ -5,7 +5,7 @@ import {
   NotesList,
   Sidebar,
   NotesCard,
-  StatCard,
+  // StatCard,
 } from "./components";
 import { useState } from "react";
 
@@ -65,12 +65,6 @@ function App() {
             />
 
             <main className="p-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                <StatCard title="Total" value={stats.total} icon="📄" />
-                <StatCard title="Favorites" value={stats.fav} icon="⭐" />
-                <StatCard title="Archived" value={stats.archived} icon="🗄️" />
-              </div>
-
               <section>
                 <h2 className="text-lg font-semibold mb-3">Your Notes</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -8,13 +8,13 @@ function Sidebar({ stats }) {
 
       <div className="space-y-3">
         <button className="btn btn-ghost justify-start w-full">
-          All Notes <span className="ml-auto badge">{stats.total}</span>
+          📄 All Notes <span className="ml-auto badge">{stats.total}</span>
         </button>
         <button className="btn btn-ghost justify-start w-full">
-          Favorites <span className="ml-auto badge">{stats.fav}</span>
+          ⭐ Favorites <span className="ml-auto badge">{stats.fav}</span>
         </button>
         <button className="btn btn-ghost justify-start w-full">
-          Archived <span className="ml-auto badge">{stats.archived}</span>
+          🗄️ Archived <span className="ml-auto badge">{stats.archived}</span>
         </button>
       </div>
 
