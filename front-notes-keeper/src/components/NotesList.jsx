@@ -7,7 +7,6 @@ import { fetchNotes } from "../features/notesSlice";
 function NotesList() {
   const dispatch = useDispatch();
   const { notes, status, error } = useSelector((state) => state.note);
-  console.log(notes);
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchNotes()); // Dispatch the async thunk

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const serverUrl = `http://localhost:3000/api/notes`;
+const serverUrl = `https://notes-keeper-k8bf.onrender.com/api/notes`;
 
 export const fetchNotes = createAsyncThunk(
   "notes/fetchNotes",
@@ -77,20 +77,7 @@ export const deleteNote = createAsyncThunk(
 );
 
 const initialState = {
-  notes: [
-    // {
-    //   _id: 1,
-    //   title: "git push",
-    //   desc: "The git push command is used to upload your local commits to a remote repository, such as one hosted on GitHub, GitLab, or Bitbucket.",
-    //   isSelectedForEdit: false,
-    // },
-    // {
-    //   _id: 2,
-    //   title: "Proxy(Object)",
-    //   desc: "The output [Proxy(Object)] in your console is a feature of Redux Toolkit and the library it uses internally, Immer. It's the expected behavior when you console.log the state object inside a Redux Toolkit reducer.",
-    //   isSelectedForEdit: false,
-    // },
-  ],
+  notes: [],
   status: "idle",
   error: null,
 };
