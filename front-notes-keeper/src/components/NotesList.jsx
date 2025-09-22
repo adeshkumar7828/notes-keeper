@@ -17,7 +17,9 @@ function NotesList() {
   if (status === "failed") {
     return (
       <>
-        <h1 className="font-bold text-2xl underline m-4">Your Notes</h1>
+        <h1 className="font-bold text-2xl text-cyan-700 underline mb-4 ml-4">
+          Your Notes
+        </h1>
         <div role="alert" className="alert alert-error">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,20 +42,26 @@ function NotesList() {
 
   return (
     <>
-      <h1 className="font-bold text-2xl underline m-4">Your Notes</h1>
+      <h1 className="font-bold text-2xl text-cyan-700 underline mb-4 ml-4">
+        Your Notes
+      </h1>
       {status === "loading" ? (
-        <div>
-          <span className="loading loading-spinner loading-xl"></span>
+        <div className="flex justify-center items-center h-40">
+          <span className="loading loading-spinner loading-lg text-info"></span>
+        </div>
+      ) : status === "failed" ? (
+        <div role="alert" className="alert alert-error shadow-lg my-4 mx-6">
+          <span>Error! Request {error}</span>
         </div>
       ) : (
-        <div className="grid grid-flow-col auto-cols w-auto gap-4">
-          {notes.map((singleNote, i) => {
-            return singleNote.isSelectedForEdit ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {notes.map((singleNote, i) =>
+            singleNote.isSelectedForEdit ? (
               <EditNote key={i} noteObj={singleNote} />
             ) : (
-              <NotesCard key={singleNote.desc} noteObj={singleNote} />
-            );
-          })}
+              <NotesCard key={singleNote._id} noteObj={singleNote} />
+            )
+          )}
         </div>
       )}
     </>
