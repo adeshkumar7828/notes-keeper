@@ -23,27 +23,23 @@ function EditNote({ noteObj }) {
   }
 
   return (
-    <div className="card bg-base-100 shadow-sm border-2 border-cyan-600 rounded-2xl">
-      <div className="card-body">
+    <div className="card bg-base-100 shadow-md border border-cyan-500 rounded-xl transition-transform hover:scale-[1.02]">
+      <div className="card-body space-y-3">
         <input
-          type="email"
-          className="input"
+          type="text"
+          className="input input-bordered w-full"
           value={editTitle}
-          onChange={(e) => {
-            setEditTitle(e.target.value);
-          }}
+          onChange={(e) => setEditTitle(e.target.value)}
         />
         <textarea
-          className="textarea"
+          className="textarea textarea-bordered w-full h-32 resize-none"
           value={editDesc}
-          onChange={(e) => {
-            setEditDesc(e.target.value);
-          }}
-        ></textarea>
+          onChange={(e) => setEditDesc(e.target.value)}
+        />
         <div className="card-actions justify-end">
           <button
-            className="btn btn-soft btn-info"
-            onClick={() => handleEditNoteSaveButton()}
+            className="btn btn-info btn-sm"
+            onClick={handleEditNoteSaveButton}
           >
             Save
           </button>
